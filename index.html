@@ -6,59 +6,59 @@
         body {
             margin: 0; padding: 0; overflow: hidden;
             background-color: transparent; 
-            font-family: 'Arial', sans-serif; /* Oyun içi fonta benzer */
+            font-family: 'Arial', sans-serif; 
             color: white;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
         }
 
         /* --- ORTAK CAM EFEKTİ --- */
         .glass-panel {
             background-color: rgba(20, 22, 26, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
+            border-radius: 6px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
         }
 
-        /* --- SOL ALT: BARLAR --- */
+        /* --- SOL ALT: BARLAR (KÜÇÜLTÜLDÜ) --- */
         #bottom-left-container {
             position: absolute;
-            bottom: 40px; left: 20px;
-            width: 280px;
-            display: flex; flex-direction: column; gap: 12px;
-            display: none; /* Lua'dan Modern seçilince açılacak */
+            bottom: 30px; left: 15px;
+            width: 220px; /* 280px'den 220px'e düşürülerek çok daha kibar yapıldı */
+            display: flex; flex-direction: column; gap: 8px; /* Barlar arası boşluk azaltıldı */
+            display: none; 
         }
         .bar-box {
-            padding: 10px; display: none; transition: opacity 0.3s;
+            padding: 7px 10px; display: none; transition: opacity 0.3s; /* İç genişlik kısıldı */
         }
-        .bar-header { display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; margin-bottom: 6px; }
-        .bar-bg { width: 100%; height: 10px; background-color: rgba(0, 0, 0, 0.6); border-radius: 5px; box-shadow: inset 0px 0px 5px rgba(0,0,0,0.8); }
-        .bar-fill { height: 100%; width: 0%; border-radius: 5px; transition: width 0.3s ease-out; }
+        .bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 5px; } /* Yazı boyutları küçültüldü */
+        .bar-bg { width: 100%; height: 8px; background-color: rgba(0, 0, 0, 0.6); border-radius: 4px; box-shadow: inset 0px 0px 4px rgba(0,0,0,0.8); } /* Bar yüksekliği inceltildi */
+        .bar-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s ease-out; }
         
-        /* Renkler & Parlamalar */
-        #fill-health { background: linear-gradient(90deg, #28a745, #54e346); box-shadow: 0 0 10px rgba(84, 227, 70, 0.7); }
-        #fill-armor { background: linear-gradient(90deg, #0056b3, #00d2ff); box-shadow: 0 0 10px rgba(0, 210, 255, 0.7); }
-        #fill-hunger { background: linear-gradient(90deg, #d35400, #f39c12); box-shadow: 0 0 10px rgba(243, 156, 18, 0.7); }
-        #fill-thirst { background: linear-gradient(90deg, #0984e3, #74b9ff); box-shadow: 0 0 10px rgba(116, 185, 255, 0.7); }
-        #fill-sleep { background: linear-gradient(90deg, #6c5ce7, #a29bfe); box-shadow: 0 0 10px rgba(162, 155, 254, 0.7); }
-        #fill-wand { background: linear-gradient(90deg, #b33939, #ff5252); box-shadow: 0 0 12px rgba(255, 82, 82, 0.9); }
-        .timer-text { font-size: 12px; color: #f1c40f; }
+        /* Renkler & Parlamalar (Glow boyutu hafif kısıldı) */
+        #fill-health { background: linear-gradient(90deg, #28a745, #54e346); box-shadow: 0 0 8px rgba(84, 227, 70, 0.6); }
+        #fill-armor { background: linear-gradient(90deg, #0056b3, #00d2ff); box-shadow: 0 0 8px rgba(0, 210, 255, 0.6); }
+        #fill-hunger { background: linear-gradient(90deg, #d35400, #f39c12); box-shadow: 0 0 8px rgba(243, 156, 18, 0.6); }
+        #fill-thirst { background: linear-gradient(90deg, #0984e3, #74b9ff); box-shadow: 0 0 8px rgba(116, 185, 255, 0.6); }
+        #fill-sleep { background: linear-gradient(90deg, #6c5ce7, #a29bfe); box-shadow: 0 0 8px rgba(162, 155, 254, 0.6); }
+        #fill-wand { background: linear-gradient(90deg, #b33939, #ff5252); box-shadow: 0 0 10px rgba(255, 82, 82, 0.8); }
+        .timer-text { font-size: 11px; color: #f1c40f; }
 
-        /* --- SAĞ ÜST: BİLGİ PANELİ --- */
+        /* --- SAĞ ÜST: BİLGİ PANELİ (ORANTILI KÜÇÜLTÜLDÜ) --- */
         #top-right-container {
             position: absolute;
             top: 20px; right: 20px;
             display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
-            display: none; /* Lua'dan Modern seçilince açılacak */
+            display: none; 
         }
         .info-row {
-            padding: 8px 15px; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: bold;
+            padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold;
         }
         .icon-circle {
-            width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 8px currentColor;
+            width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 6px currentColor;
         }
-        .text-muted { color: #aaa; font-weight: normal; margin: 0 5px; }
+        .text-muted { color: #aaa; font-weight: normal; margin: 0 4px; }
     </style>
 </head>
 <body>
@@ -103,19 +103,17 @@
             <div class="bar-bg"><div class="bar-fill" id="fill-thirst"></div></div>
         </div>
         <div class="glass-panel bar-box" id="box-sleep">
-            <div class="bar-header"><span>Enerji</span><span id="txt-sleep-val">100</span></div>
+            <div class="bar-header"><span>Uykusuzluk</span><span id="txt-sleep-val">100</span></div>
             <div class="bar-bg"><div class="bar-fill" id="fill-sleep"></div></div>
         </div>
     </div>
 
     <script>
-        // Görünürlük Kontrolü (Lua'dan "Modern" seçiliyse açar)
         function ToggleSectors(showBottomLeft, showTopRight) {
             document.getElementById('bottom-left-container').style.display = showBottomLeft ? 'flex' : 'none';
             document.getElementById('top-right-container').style.display = showTopRight ? 'flex' : 'none';
         }
 
-        // Sağ Üst Veri Güncelleme
         function UpdateTopRight(id, name, realTime, realDate, gameTime, hexColor) {
             document.getElementById('tr-id').innerText = id;
             document.getElementById('tr-name').innerText = name;
@@ -123,7 +121,6 @@
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
             
-            // İkon renklerini faction/bina rengine göre ayarla
             document.getElementById('tr-color-1').style.color = hexColor;
             document.getElementById('tr-color-1').style.backgroundColor = hexColor;
             document.getElementById('tr-color-2').style.color = hexColor;
@@ -132,13 +129,18 @@
             document.getElementById('tr-color-3').style.backgroundColor = hexColor;
         }
 
-        // Sol Alt Bar Veri Güncelleme
         function UpdateBar(type, val, maxVal, labelText, forceShow) {
             let box = document.getElementById('box-' + type);
             let fill = document.getElementById('fill-' + type);
             let txt = document.getElementById('txt-' + type + '-val');
 
-            if (!forceShow && val >= maxVal && type !== 'health') {
+            // ZIRH MANTIĞI: Eğer zırh 0 veya daha az ise barı tamamen gizle
+            if (type === 'armor' && val <= 0) {
+                box.style.display = 'none'; return;
+            }
+
+            // AÇLIK/SUSUZLUK/UYKUSUZLUK MANTIĞI: Değer tam doluysa (100) gizle, azalınca göster
+            if (!forceShow && val >= maxVal && type !== 'health' && type !== 'armor') {
                 box.style.display = 'none'; return;
             } else {
                 box.style.display = 'block';
@@ -149,7 +151,6 @@
             txt.innerText = labelText !== undefined ? labelText : Math.round(val);
         }
 
-        // Büyü Barı
         function UpdateWand(spellName, percent, timerStr, isVisible) {
             let box = document.getElementById('box-wand');
             if (!isVisible) { box.style.display = 'none'; return; }
