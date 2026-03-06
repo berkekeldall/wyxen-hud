@@ -6,7 +6,6 @@
         :root {
             --fac-color: #ffffff; 
         }
-
         body {
             margin: 0; padding: 0; overflow: hidden;
             background-color: transparent; 
@@ -14,16 +13,12 @@
             color: white;
             text-shadow: 1px 1px 2px black;
         }
-
-        /* --- SOL ÜST: DISCORD --- */
         #top-left-container {
             position: absolute; top: 15px; left: 15px;
             display: none; align-items: center; gap: 10px;
         }
         .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
-
-        /* --- SAĞ ÜST: GÖRSELLİ BİLGİ PANELİ --- */
         #top-right-container {
             position: absolute; top: 15px; right: 15px;
             display: flex; flex-direction: column; gap: 8px; align-items: flex-end; display: none; 
@@ -31,8 +26,6 @@
         .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; }
         .info-icon { width: 20px; height: 20px; }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
-
-        /* --- SOL ALT: SIFIR KASMA GARANTİLİ BARLAR --- */
         #bottom-left-container {
             position: absolute; bottom: 30px; left: 15px;
             width: 240px; display: flex; flex-direction: column; gap: 10px; display: none;
@@ -52,8 +45,6 @@
         #fill-sleep { background-color: #9b59b6; }
         #fill-wand { background-color: #e74c3c; }
         .highlight-text { color: #f1c40f; }
-
-        /* --- SAĞ ALT: GSPEAK SES PANELİ --- */
         #voice-container {
             position: absolute; bottom: 30px; right: 30px;
             display: none; flex-direction: column; align-items: center; gap: 8px;
@@ -69,34 +60,29 @@
         .voice-icon {
             width: 26px; height: 26px; z-index: 2; transition: all 0.2s;
         }
-
         @keyframes ripple {
             0% { box-shadow: 0 0 0 0 var(--voice-color); }
             70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
         }
         .voice-circle.talking { animation: ripple 1s infinite; }
-
         .voice-bars { display: flex; gap: 4px; }
         .v-bar {
             width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6);
             border-radius: 2px; transition: background-color 0.2s;
         }
-    </script>
+    </style>
 </head>
 <body>
-
     <div id="top-left-container">
         <img src="icons/discordicon.png" class="dc-icon" alt="DC">
         <span class="discord-text">dc.gg/wyxen</span>
     </div>
-
     <div id="top-right-container">
         <div class="info-row"><img src="icons/manicon.png" class="info-icon"><span id="tr-id">0</span><span id="tr-name">Oyuncu Adı</span></div>
         <div class="info-row"><img src="icons/timeicon.png" class="info-icon"><span id="tr-realtime">00:00</span><span class="text-muted">•</span><img src="icons/takvimicon.png" class="info-icon" style="margin-left: 4px;"><span id="tr-realdate">00.00.0000</span></div>
         <div class="info-row"><img src="icons/gametimeicon.png" class="info-icon"><span id="tr-gametime">00:00</span></div>
     </div>
-
     <div id="bottom-left-container">
         <div class="bar-wrapper" id="box-wand">
             <div class="bar-info"><span id="txt-wand-name">Büyü</span><span id="txt-wand-val" class="highlight-text">Hazır</span></div>
@@ -119,7 +105,6 @@
             <div class="bar-track"><div class="bar-fill" id="fill-sleep"></div></div>
         </div>
     </div>
-
     <div id="voice-container">
         <div class="voice-circle" id="voice-circle">
             <img src="icons/micon.png" id="voice-icon" class="voice-icon">
@@ -130,7 +115,6 @@
             <div class="v-bar" id="v-bar-3"></div>
         </div>
     </div>
-
     <script>
         function ToggleSectors(showTopLeft, showTopRight, showBottomLeft, showVoice) {
             document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
@@ -138,29 +122,25 @@
             document.getElementById('bottom-left-container').style.display = showBottomLeft ? 'flex' : 'none';
             document.getElementById('voice-container').style.display = showVoice ? 'flex' : 'none';
         }
-
         function UpdateTopRight(id, name, realTime, realDate, gameTime, hexColor) {
             document.getElementById('tr-id').innerText = id;
             document.getElementById('tr-name').innerText = name;
             document.getElementById('tr-realtime').innerText = realTime;
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
+            document.documentElement.style.setProperty('--fac-color', hexColor);
         }
-
         function UpdateBar(type, val, maxVal, labelText, forceShow) {
             let box = document.getElementById('box-' + type);
             let fill = document.getElementById('fill-' + type);
             let txt = document.getElementById('txt-' + type + '-val');
-
             if (!forceShow && val >= maxVal && type !== 'health') {
                 box.style.display = 'none'; return;
             } else { box.style.display = 'block'; }
-
             let percent = Math.max(0, Math.min(100, (val / maxVal) * 100));
             fill.style.width = percent + '%';
             txt.innerText = labelText !== undefined ? labelText : Math.round(val);
         }
-
         function UpdateWand(spellName, percent, timerStr, isVisible) {
             let box = document.getElementById('box-wand');
             if (!isVisible) { box.style.display = 'none'; return; }
@@ -169,13 +149,10 @@
             document.getElementById('txt-wand-val').innerText = timerStr;
             document.getElementById('fill-wand').style.width = percent + '%';
         }
-
         function UpdateVoice(isTalking, rangeLevel, hexColor) {
             let circle = document.getElementById('voice-circle');
             let icon = document.getElementById('voice-icon');
-            
             circle.style.setProperty('--voice-color', hexColor);
-
             if (isTalking) {
                 circle.classList.add('talking');
                 icon.src = 'icons/micoff.png'; 
@@ -185,7 +162,6 @@
                 icon.src = 'icons/micon.png'; 
                 icon.style.opacity = '0.5';
             }
-
             for (let i = 1; i <= 3; i++) {
                 let bar = document.getElementById('v-bar-' + i);
                 if (isTalking && i <= rangeLevel) {
