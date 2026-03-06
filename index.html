@@ -13,7 +13,6 @@
             color: white;
             text-shadow: 1px 1px 2px black;
         }
-        
         #top-left-container {
             position: absolute; top: 15px; left: 15px;
             display: none; align-items: center; gap: 10px;
@@ -21,18 +20,23 @@
         .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
         
+        /* --- SAĞ ÜST: TAMAMEN ORTALANDI --- */
         #top-right-container {
             position: absolute; top: 15px; right: 15px;
-            display: flex; flex-direction: column; gap: 5px; align-items: flex-end; display: none; 
+            display: flex; flex-direction: column; gap: 6px; 
+            align-items: center; /* Tümü tam ortaya hizalandı */
+            min-width: 160px; /* Ortalamanın düzgün durması için genişlik verildi */
+            display: none; 
         }
-        .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; justify-content: flex-end; }
+        .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; justify-content: center; }
         .info-icon { width: 20px; height: 20px; }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
         
+        /* Simetrik Çizgi: Her iki uç şeffaf, ortası parlak */
         .separator {
-            width: 80%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--fac-color) 80%, var(--fac-color));
-            box-shadow: 0px 0px 5px var(--fac-color);
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--fac-color), transparent);
+            box-shadow: 0px 0px 4px var(--fac-color);
             opacity: 0.8; margin: 2px 0;
             border-radius: 2px;
         }
@@ -56,7 +60,6 @@
         #fill-wand { background-color: #e74c3c; }
         .highlight-text { color: #f1c40f; }
         
-        /* --- YENİ OPTİMİZE GSPEAK PANELİ --- */
         #voice-container {
             position: absolute; bottom: 30px; right: 30px;
             display: none; flex-direction: column; align-items: center; gap: 8px;
@@ -64,23 +67,15 @@
         .voice-circle {
             width: 50px; height: 50px; background-color: rgba(20, 22, 26, 0.8);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            position: relative; 
-            /* Sadece renk ve parlama geçişi var, animasyon döngüsü yok! (Sıfır Kasma) */
-            transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+            position: relative; transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
             --voice-color: #ffffff;
         }
-        
-        /* Konuşurken devreye giren statik ışık */
         .voice-circle.talking {
             background-color: var(--voice-color);
             box-shadow: 0px 0px 15px var(--voice-color);
         }
-
-        .voice-icon { 
-            width: 26px; height: 26px; position: absolute; transition: opacity 0.15s ease-out; 
-        }
-        #voice-icon-active { opacity: 0; /* Başlangıçta gizli */ }
-        
+        .voice-icon { width: 26px; height: 26px; position: absolute; transition: opacity 0.15s ease-out; }
+        #voice-icon-active { opacity: 0; }
         .voice-bars { display: flex; gap: 4px; }
         .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.15s; }
     </style>
