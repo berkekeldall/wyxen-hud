@@ -12,7 +12,6 @@
             background-color: transparent; 
             font-family: 'Arial', sans-serif; 
             color: white;
-            /* FPS Düşmanı olan Drop-Shadow SİLİNDİ, en hafif gölge olan text-shadow bırakıldı */
             text-shadow: 1px 1px 2px black;
         }
 
@@ -21,10 +20,7 @@
             position: absolute; top: 15px; left: 15px;
             display: none; align-items: center; gap: 10px;
         }
-        .dc-icon {
-            width: 28px; height: 28px;
-            /* İkonlardaki ışık efekti FPS için kaldırıldı */
-        }
+        .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
 
         /* --- SAĞ ÜST: GÖRSELLİ BİLGİ PANELİ --- */
@@ -41,33 +37,52 @@
             position: absolute; bottom: 30px; left: 15px;
             width: 240px; display: flex; flex-direction: column; gap: 10px; display: none;
         }
-        
         .bar-wrapper {
             display: none;
-            /* Gradient yerine Düz rgba kullanıldı, ekran kartını hiç yormaz */
             background-color: rgba(15, 17, 20, 0.6);
             border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 12px;
-            border-radius: 4px;
-            transition: opacity 0.3s;
+            padding: 6px 12px; border-radius: 4px; transition: opacity 0.3s;
         }
-
-        .bar-info {
-            display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px;
-        }
-        
+        .bar-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px; }
         .bar-track { width: 100%; height: 6px; background-color: rgba(0,0,0,0.7); border-radius: 3px; overflow: hidden; }
         .bar-fill { height: 100%; width: 0%; border-radius: 3px; transition: width 0.2s linear; }
-        
-        /* Bar İç Renkleri - Efektsiz, Dümdüz ve Saf Renkler (Max Performans) */
         #fill-health { background-color: #2ecc71; }
         #fill-hunger { background-color: #e67e22; }
         #fill-thirst { background-color: #3498db; }
         #fill-sleep { background-color: #9b59b6; }
         #fill-wand { background-color: #e74c3c; }
-        
         .highlight-text { color: #f1c40f; }
-    </style>
+
+        /* --- SAĞ ALT: GSPEAK SES PANELİ --- */
+        #voice-container {
+            position: absolute; bottom: 30px; right: 30px;
+            display: none; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .voice-circle {
+            width: 50px; height: 50px;
+            background-color: rgba(20, 22, 26, 0.8);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; transition: all 0.2s;
+            --voice-color: #ffffff;
+        }
+        .voice-icon {
+            width: 26px; height: 26px; z-index: 2; transition: all 0.2s;
+        }
+
+        @keyframes ripple {
+            0% { box-shadow: 0 0 0 0 var(--voice-color); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+        }
+        .voice-circle.talking { animation: ripple 1s infinite; }
+
+        .voice-bars { display: flex; gap: 4px; }
+        .v-bar {
+            width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6);
+            border-radius: 2px; transition: background-color 0.2s;
+        }
+    </script>
 </head>
 <body>
 
@@ -105,11 +120,23 @@
         </div>
     </div>
 
+    <div id="voice-container">
+        <div class="voice-circle" id="voice-circle">
+            <img src="icons/micon.png" id="voice-icon" class="voice-icon">
+        </div>
+        <div class="voice-bars">
+            <div class="v-bar" id="v-bar-1"></div>
+            <div class="v-bar" id="v-bar-2"></div>
+            <div class="v-bar" id="v-bar-3"></div>
+        </div>
+    </div>
+
     <script>
-        function ToggleSectors(showTopLeft, showTopRight, showBottomLeft) {
+        function ToggleSectors(showTopLeft, showTopRight, showBottomLeft, showVoice) {
             document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
             document.getElementById('top-right-container').style.display = showTopRight ? 'flex' : 'none';
             document.getElementById('bottom-left-container').style.display = showBottomLeft ? 'flex' : 'none';
+            document.getElementById('voice-container').style.display = showVoice ? 'flex' : 'none';
         }
 
         function UpdateTopRight(id, name, realTime, realDate, gameTime, hexColor) {
@@ -141,6 +168,34 @@
             document.getElementById('txt-wand-name').innerText = spellName;
             document.getElementById('txt-wand-val').innerText = timerStr;
             document.getElementById('fill-wand').style.width = percent + '%';
+        }
+
+        function UpdateVoice(isTalking, rangeLevel, hexColor) {
+            let circle = document.getElementById('voice-circle');
+            let icon = document.getElementById('voice-icon');
+            
+            circle.style.setProperty('--voice-color', hexColor);
+
+            if (isTalking) {
+                circle.classList.add('talking');
+                icon.src = 'icons/micoff.png'; 
+                icon.style.opacity = '1';
+            } else {
+                circle.classList.remove('talking');
+                icon.src = 'icons/micon.png'; 
+                icon.style.opacity = '0.5';
+            }
+
+            for (let i = 1; i <= 3; i++) {
+                let bar = document.getElementById('v-bar-' + i);
+                if (isTalking && i <= rangeLevel) {
+                    bar.style.backgroundColor = hexColor;
+                } else if (i <= rangeLevel) {
+                    bar.style.backgroundColor = 'rgba(100, 100, 100, 0.6)';
+                } else {
+                    bar.style.backgroundColor = 'rgba(40, 40, 40, 0.4)';
+                }
+            }
         }
     </script>
 </body>
