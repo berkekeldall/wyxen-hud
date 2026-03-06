@@ -13,6 +13,7 @@
             color: white;
             text-shadow: 1px 1px 2px black;
         }
+        
         #top-left-container {
             position: absolute; top: 15px; left: 15px;
             display: none; align-items: center; gap: 10px;
@@ -55,6 +56,7 @@
         #fill-wand { background-color: #e74c3c; }
         .highlight-text { color: #f1c40f; }
         
+        /* --- YENİ OPTİMİZE GSPEAK PANELİ --- */
         #voice-container {
             position: absolute; bottom: 30px; right: 30px;
             display: none; flex-direction: column; align-items: center; gap: 8px;
@@ -62,24 +64,25 @@
         .voice-circle {
             width: 50px; height: 50px; background-color: rgba(20, 22, 26, 0.8);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            position: relative; --voice-color: #ffffff;
+            position: relative; 
+            /* Sadece renk ve parlama geçişi var, animasyon döngüsü yok! (Sıfır Kasma) */
+            transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+            --voice-color: #ffffff;
         }
-        .voice-icon { width: 26px; height: 26px; z-index: 2; transition: all 0.2s; }
         
-        /* Yeni %100 GPU Optimize Edilmiş Dalgalanma Animasyonu */
-        .voice-circle::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%; border: 2px solid var(--voice-color); opacity: 0;
-            pointer-events: none;
+        /* Konuşurken devreye giren statik ışık */
+        .voice-circle.talking {
+            background-color: var(--voice-color);
+            box-shadow: 0px 0px 15px var(--voice-color);
         }
-        @keyframes ripple-gpu {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.6); opacity: 0; }
+
+        .voice-icon { 
+            width: 26px; height: 26px; position: absolute; transition: opacity 0.15s ease-out; 
         }
-        .voice-circle.talking::after { animation: ripple-gpu 1s infinite ease-out; }
+        #voice-icon-active { opacity: 0; /* Başlangıçta gizli */ }
         
         .voice-bars { display: flex; gap: 4px; }
-        .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.2s; }
+        .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.15s; }
     </style>
 </head>
 <body>
@@ -121,7 +124,8 @@
     
     <div id="voice-container">
         <div class="voice-circle" id="voice-circle">
-            <img src="icons/micon.png" id="voice-icon" class="voice-icon">
+            <img src="icons/micon.png" id="voice-icon-idle" class="voice-icon">
+            <img src="icons/micoff.png" id="voice-icon-active" class="voice-icon">
         </div>
         <div class="voice-bars">
             <div class="v-bar" id="v-bar-1"></div>
@@ -164,19 +168,24 @@
             document.getElementById('txt-wand-val').innerText = timerStr;
             document.getElementById('fill-wand').style.width = percent + '%';
         }
+        
         function UpdateVoice(isTalking, rangeLevel, hexColor) {
             let circle = document.getElementById('voice-circle');
-            let icon = document.getElementById('voice-icon');
+            let iconIdle = document.getElementById('voice-icon-idle');
+            let iconActive = document.getElementById('voice-icon-active');
+            
             circle.style.setProperty('--voice-color', hexColor);
+            
             if (isTalking) {
                 circle.classList.add('talking');
-                icon.src = 'icons/micoff.png'; 
-                icon.style.opacity = '1';
+                iconIdle.style.opacity = '0';
+                iconActive.style.opacity = '1';
             } else {
                 circle.classList.remove('talking');
-                icon.src = 'icons/micon.png'; 
-                icon.style.opacity = '0.5';
+                iconIdle.style.opacity = '1';
+                iconActive.style.opacity = '0';
             }
+            
             for (let i = 1; i <= 3; i++) {
                 let bar = document.getElementById('v-bar-' + i);
                 if (isTalking && i <= rangeLevel) {
