@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <style>
         :root {
-            /* Lua'dan gelecek bina/taraf rengi buraya işlenecek */
             --fac-color: #ffffff; 
         }
 
@@ -13,7 +12,7 @@
             background-color: transparent; 
             font-family: 'Arial', sans-serif; 
             color: white;
-            /* Arka planda kutu olmadığı için yazıları okunur kılan güçlü gölge */
+            /* Yazıların ve ikonların net okunması için harika bir gölge */
             text-shadow: 1px 1px 2px black, 0px 0px 8px rgba(0,0,0,0.8);
         }
 
@@ -21,13 +20,12 @@
         #top-left-container {
             position: absolute;
             top: 15px; left: 15px;
-            display: none; /* Lua'dan Modern seçilince açılır */
+            display: none; 
             align-items: center;
             gap: 10px;
         }
         .dc-icon {
             width: 28px; height: 28px;
-            /* Discord mavisi hafif parlama */
             filter: drop-shadow(0px 0px 6px rgba(88, 101, 242, 0.9));
         }
         .discord-text {
@@ -39,14 +37,13 @@
             position: absolute;
             top: 15px; right: 15px;
             display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
-            display: none; /* Lua'dan Modern seçilince açılır */
+            display: none; 
         }
         .info-row {
             display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold;
         }
         .info-icon {
             width: 20px; height: 20px;
-            /* İkonların arkasına bina renginde harika bir ışık vuracak */
             filter: drop-shadow(1px 1px 2px black) drop-shadow(0px 0px 8px var(--fac-color)); 
         }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
@@ -55,25 +52,25 @@
 <body>
 
     <div id="top-left-container">
-        <img src="icons/discordicon.png" class="dc-icon" alt="DC">
+        <img src="discordicon.png" class="dc-icon" alt="DC">
         <span class="discord-text">dc.gg/wyxen</span>
     </div>
 
     <div id="top-right-container">
         <div class="info-row">
-            <img src="icons/manicon.png" class="info-icon">
+            <img src="manicon.png" class="info-icon">
             <span id="tr-id">0</span>
             <span id="tr-name">Oyuncu Adı</span>
         </div>
         <div class="info-row">
-            <img src="icons/timeicon.png" class="info-icon">
+            <img src="timeicon.png" class="info-icon">
             <span id="tr-realtime">00:00</span>
             <span class="text-muted">•</span>
-            <img src="icons/takvimicon.png" class="info-icon" style="margin-left: 4px;">
+            <img src="takvimicon.png" class="info-icon" style="margin-left: 4px;">
             <span id="tr-realdate">00.00.0000</span>
         </div>
         <div class="info-row">
-            <img src="icons/gametimeicon.png" class="info-icon">
+            <img src="gametimeicon.png" class="info-icon">
             <span id="tr-gametime">00:00</span>
         </div>
     </div>
@@ -90,8 +87,6 @@
             document.getElementById('tr-realtime').innerText = realTime;
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
-            
-            // HTML'deki '--fac-color' değişkenini günceller (İkonlar o renkte parlar)
             document.documentElement.style.setProperty('--fac-color', hexColor);
         }
     </script>
