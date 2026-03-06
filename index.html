@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <style>
         :root {
-            /* Lua'dan gelen bina/taraf rengini tutacak değişken */
+            /* Lua'dan gelecek bina/taraf rengi buraya işlenecek */
             --fac-color: #ffffff; 
         }
 
@@ -13,35 +13,21 @@
             background-color: transparent; 
             font-family: 'Arial', sans-serif; 
             color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            /* Arka planda kutu olmadığı için yazıları okunur kılan güçlü gölge */
+            text-shadow: 1px 1px 2px black, 0px 0px 8px rgba(0,0,0,0.8);
         }
 
-        .glass-panel {
-            background-color: rgba(20, 22, 26, 0.4);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
-        }
-
-        /* --- SOL ÜST: DISCORD EFEKTİ --- */
+        /* --- SOL ÜST: DISCORD --- */
         #top-left-container {
             position: absolute;
             top: 15px; left: 15px;
-            display: none; /* Lua'dan gelen sinyalle açılır */
+            display: none; /* Lua'dan Modern seçilince açılır */
             align-items: center;
-            padding: 8px 14px;
             gap: 10px;
-            border-radius: 8px;
-            /* Discord mavisine hafif bir degrade ve parlama (Glow) efekti */
-            background: linear-gradient(90deg, rgba(88, 101, 242, 0.25), rgba(20, 22, 26, 0.4));
-            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); 
-            border: 1px solid rgba(88, 101, 242, 0.3);
-            backdrop-filter: blur(8px);
         }
         .dc-icon {
-            width: 26px; height: 26px;
+            width: 28px; height: 28px;
+            /* Discord mavisi hafif parlama */
             filter: drop-shadow(0px 0px 6px rgba(88, 101, 242, 0.9));
         }
         .discord-text {
@@ -52,42 +38,42 @@
         #top-right-container {
             position: absolute;
             top: 15px; right: 15px;
-            display: flex; flex-direction: column; gap: 6px; align-items: flex-end;
-            display: none; 
+            display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+            display: none; /* Lua'dan Modern seçilince açılır */
         }
         .info-row {
-            padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold;
+            display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold;
         }
         .info-icon {
-            width: 16px; height: 16px;
-            /* Yüklediğin PNG ikonları bina renginde parlatacak sihirli kod */
-            filter: drop-shadow(0px 0px 5px var(--fac-color)); 
+            width: 20px; height: 20px;
+            /* İkonların arkasına bina renginde harika bir ışık vuracak */
+            filter: drop-shadow(1px 1px 2px black) drop-shadow(0px 0px 8px var(--fac-color)); 
         }
-        .text-muted { color: #aaa; font-weight: normal; margin: 0 4px; }
+        .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
     </style>
 </head>
 <body>
 
     <div id="top-left-container">
-        <img src="icons/discord.png" class="dc-icon" alt="DC">
+        <img src="icons/discordicon.png" class="dc-icon" alt="DC">
         <span class="discord-text">dc.gg/wyxen</span>
     </div>
 
     <div id="top-right-container">
-        <div class="glass-panel info-row">
-            <img src="icons/user.png" class="info-icon">
+        <div class="info-row">
+            <img src="icons/manicon.png" class="info-icon">
             <span id="tr-id">0</span>
             <span id="tr-name">Oyuncu Adı</span>
         </div>
-        <div class="glass-panel info-row">
-            <img src="icons/clock.png" class="info-icon">
+        <div class="info-row">
+            <img src="icons/timeicon.png" class="info-icon">
             <span id="tr-realtime">00:00</span>
             <span class="text-muted">•</span>
-            <img src="icons/calendar.png" class="info-icon" style="margin-left: 4px;">
+            <img src="icons/takvimicon.png" class="info-icon" style="margin-left: 4px;">
             <span id="tr-realdate">00.00.0000</span>
         </div>
-        <div class="glass-panel info-row">
-            <img src="icons/gametime.png" class="info-icon">
+        <div class="info-row">
+            <img src="icons/gametimeicon.png" class="info-icon">
             <span id="tr-gametime">00:00</span>
         </div>
     </div>
@@ -105,7 +91,7 @@
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
             
-            // Tüm ikonların arkasına düşecek parlama rengini (faction color) belirliyoruz
+            // HTML'deki '--fac-color' değişkenini günceller (İkonlar o renkte parlar)
             document.documentElement.style.setProperty('--fac-color', hexColor);
         }
     </script>
