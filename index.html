@@ -19,20 +19,29 @@
         }
         .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
+        
         #top-right-container {
             position: absolute; top: 15px; right: 15px;
-            display: flex; flex-direction: column; gap: 8px; align-items: flex-end; display: none; 
+            display: flex; flex-direction: column; gap: 5px; align-items: flex-end; display: none; 
         }
-        .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; }
+        .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; justify-content: flex-end; }
         .info-icon { width: 20px; height: 20px; }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
+        
+        .separator {
+            width: 80%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--fac-color) 80%, var(--fac-color));
+            box-shadow: 0px 0px 5px var(--fac-color);
+            opacity: 0.8; margin: 2px 0;
+            border-radius: 2px;
+        }
+
         #bottom-left-container {
             position: absolute; bottom: 30px; left: 15px;
             width: 240px; display: flex; flex-direction: column; gap: 10px; display: none;
         }
         .bar-wrapper {
-            display: none;
-            background-color: rgba(15, 17, 20, 0.6);
+            display: none; background-color: rgba(15, 17, 20, 0.6);
             border-left: 3px solid rgba(255, 255, 255, 0.2);
             padding: 6px 12px; border-radius: 4px; transition: opacity 0.3s;
         }
@@ -45,32 +54,32 @@
         #fill-sleep { background-color: #9b59b6; }
         #fill-wand { background-color: #e74c3c; }
         .highlight-text { color: #f1c40f; }
+        
         #voice-container {
             position: absolute; bottom: 30px; right: 30px;
             display: none; flex-direction: column; align-items: center; gap: 8px;
         }
         .voice-circle {
-            width: 50px; height: 50px;
-            background-color: rgba(20, 22, 26, 0.8);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            position: relative; transition: all 0.2s;
-            --voice-color: #ffffff;
+            width: 50px; height: 50px; background-color: rgba(20, 22, 26, 0.8);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            position: relative; --voice-color: #ffffff;
         }
-        .voice-icon {
-            width: 26px; height: 26px; z-index: 2; transition: all 0.2s;
+        .voice-icon { width: 26px; height: 26px; z-index: 2; transition: all 0.2s; }
+        
+        /* Yeni %100 GPU Optimize Edilmiş Dalgalanma Animasyonu */
+        .voice-circle::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%; border: 2px solid var(--voice-color); opacity: 0;
+            pointer-events: none;
         }
-        @keyframes ripple {
-            0% { box-shadow: 0 0 0 0 var(--voice-color); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 0, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+        @keyframes ripple-gpu {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
         }
-        .voice-circle.talking { animation: ripple 1s infinite; }
+        .voice-circle.talking::after { animation: ripple-gpu 1s infinite ease-out; }
+        
         .voice-bars { display: flex; gap: 4px; }
-        .v-bar {
-            width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6);
-            border-radius: 2px; transition: background-color 0.2s;
-        }
+        .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.2s; }
     </style>
 </head>
 <body>
@@ -78,11 +87,15 @@
         <img src="icons/discordicon.png" class="dc-icon" alt="DC">
         <span class="discord-text">dc.gg/wyxen</span>
     </div>
+    
     <div id="top-right-container">
         <div class="info-row"><img src="icons/manicon.png" class="info-icon"><span id="tr-id">0</span><span id="tr-name">Oyuncu Adı</span></div>
+        <div class="separator"></div>
         <div class="info-row"><img src="icons/timeicon.png" class="info-icon"><span id="tr-realtime">00:00</span><span class="text-muted">•</span><img src="icons/takvimicon.png" class="info-icon" style="margin-left: 4px;"><span id="tr-realdate">00.00.0000</span></div>
+        <div class="separator"></div>
         <div class="info-row"><img src="icons/gametimeicon.png" class="info-icon"><span id="tr-gametime">00:00</span></div>
     </div>
+    
     <div id="bottom-left-container">
         <div class="bar-wrapper" id="box-wand">
             <div class="bar-info"><span id="txt-wand-name">Büyü</span><span id="txt-wand-val" class="highlight-text">Hazır</span></div>
@@ -105,6 +118,7 @@
             <div class="bar-track"><div class="bar-fill" id="fill-sleep"></div></div>
         </div>
     </div>
+    
     <div id="voice-container">
         <div class="voice-circle" id="voice-circle">
             <img src="icons/micon.png" id="voice-icon" class="voice-icon">
@@ -115,6 +129,7 @@
             <div class="v-bar" id="v-bar-3"></div>
         </div>
     </div>
+    
     <script>
         function ToggleSectors(showTopLeft, showTopRight, showBottomLeft, showVoice) {
             document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
