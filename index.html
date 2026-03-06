@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        :root {
+            /* Lua'dan gelen bina/taraf rengini tutacak değişken */
+            --fac-color: #ffffff; 
+        }
+
         body {
             margin: 0; padding: 0; overflow: hidden;
             background-color: transparent; 
@@ -11,7 +16,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
         }
 
-        /* --- ORTAK CAM EFEKTİ --- */
         .glass-panel {
             background-color: rgba(20, 22, 26, 0.4);
             backdrop-filter: blur(8px);
@@ -21,30 +25,30 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
         }
 
-        /* --- SOL ALT: BARLAR --- */
-        #bottom-left-container {
+        /* --- SOL ÜST: DISCORD EFEKTİ --- */
+        #top-left-container {
             position: absolute;
-            bottom: 30px; left: 15px;
-            width: 220px; 
-            display: flex; flex-direction: column; gap: 8px; 
-            display: none; 
+            top: 15px; left: 15px;
+            display: none; /* Lua'dan gelen sinyalle açılır */
+            align-items: center;
+            padding: 8px 14px;
+            gap: 10px;
+            border-radius: 8px;
+            /* Discord mavisine hafif bir degrade ve parlama (Glow) efekti */
+            background: linear-gradient(90deg, rgba(88, 101, 242, 0.25), rgba(20, 22, 26, 0.4));
+            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); 
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            backdrop-filter: blur(8px);
         }
-        .bar-box {
-            padding: 7px 10px; display: none; transition: opacity 0.3s; 
+        .dc-icon {
+            width: 26px; height: 26px;
+            filter: drop-shadow(0px 0px 6px rgba(88, 101, 242, 0.9));
         }
-        .bar-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 5px; } 
-        .bar-bg { width: 100%; height: 8px; background-color: rgba(0, 0, 0, 0.6); border-radius: 4px; box-shadow: inset 0px 0px 4px rgba(0,0,0,0.8); } 
-        .bar-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s ease-out; }
-        
-        /* Renkler & Parlamalar */
-        #fill-health { background: linear-gradient(90deg, #28a745, #54e346); box-shadow: 0 0 8px rgba(84, 227, 70, 0.6); }
-        #fill-hunger { background: linear-gradient(90deg, #d35400, #f39c12); box-shadow: 0 0 8px rgba(243, 156, 18, 0.6); }
-        #fill-thirst { background: linear-gradient(90deg, #0984e3, #74b9ff); box-shadow: 0 0 8px rgba(116, 185, 255, 0.6); }
-        #fill-sleep { background: linear-gradient(90deg, #6c5ce7, #a29bfe); box-shadow: 0 0 8px rgba(162, 155, 254, 0.6); }
-        #fill-wand { background: linear-gradient(90deg, #b33939, #ff5252); box-shadow: 0 0 10px rgba(255, 82, 82, 0.8); }
-        .timer-text { font-size: 11px; color: #f1c40f; }
+        .discord-text {
+            font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff;
+        }
 
-        /* --- SAĞ ÜST: BİLGİ PANELİ (İYİCE KÜÇÜLTÜLDÜ) --- */
+        /* --- SAĞ ÜST: GÖRSELLİ BİLGİ PANELİ --- */
         #top-right-container {
             position: absolute;
             top: 15px; right: 15px;
@@ -52,61 +56,45 @@
             display: none; 
         }
         .info-row {
-            padding: 4px 10px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: bold;
+            padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold;
         }
-        .icon-circle {
-            width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 5px currentColor;
+        .info-icon {
+            width: 16px; height: 16px;
+            /* Yüklediğin PNG ikonları bina renginde parlatacak sihirli kod */
+            filter: drop-shadow(0px 0px 5px var(--fac-color)); 
         }
         .text-muted { color: #aaa; font-weight: normal; margin: 0 4px; }
     </style>
 </head>
 <body>
 
+    <div id="top-left-container">
+        <img src="icons/discord.png" class="dc-icon" alt="DC">
+        <span class="discord-text">dc.gg/wyxen</span>
+    </div>
+
     <div id="top-right-container">
         <div class="glass-panel info-row">
-            <div class="icon-circle" id="tr-color-1"></div>
+            <img src="icons/user.png" class="info-icon">
             <span id="tr-id">0</span>
             <span id="tr-name">Oyuncu Adı</span>
         </div>
         <div class="glass-panel info-row">
-            <div class="icon-circle" id="tr-color-2"></div>
+            <img src="icons/clock.png" class="info-icon">
             <span id="tr-realtime">00:00</span>
             <span class="text-muted">•</span>
+            <img src="icons/calendar.png" class="info-icon" style="margin-left: 4px;">
             <span id="tr-realdate">00.00.0000</span>
         </div>
         <div class="glass-panel info-row">
-            <div class="icon-circle" id="tr-color-3"></div>
+            <img src="icons/gametime.png" class="info-icon">
             <span id="tr-gametime">00:00</span>
         </div>
     </div>
 
-    <div id="bottom-left-container">
-        <div class="glass-panel bar-box" id="box-wand">
-            <div class="bar-header"><span id="txt-wand-name">Büyü</span><span id="txt-wand-val" class="timer-text">Hazır</span></div>
-            <div class="bar-bg"><div class="bar-fill" id="fill-wand"></div></div>
-        </div>
-        <div class="glass-panel bar-box" id="box-health" style="display: block;">
-            <div class="bar-header"><span>Sağlık</span><span id="txt-health-val">100</span></div>
-            <div class="bar-bg"><div class="bar-fill" id="fill-health"></div></div>
-        </div>
-        
-        <div class="glass-panel bar-box" id="box-hunger">
-            <div class="bar-header"><span>Açlık</span><span id="txt-hunger-val">100</span></div>
-            <div class="bar-bg"><div class="bar-fill" id="fill-hunger"></div></div>
-        </div>
-        <div class="glass-panel bar-box" id="box-thirst">
-            <div class="bar-header"><span>Susuzluk</span><span id="txt-thirst-val">100</span></div>
-            <div class="bar-bg"><div class="bar-fill" id="fill-thirst"></div></div>
-        </div>
-        <div class="glass-panel bar-box" id="box-sleep">
-            <div class="bar-header"><span>Uykusuzluk</span><span id="txt-sleep-val">100</span></div>
-            <div class="bar-bg"><div class="bar-fill" id="fill-sleep"></div></div>
-        </div>
-    </div>
-
     <script>
-        function ToggleSectors(showBottomLeft, showTopRight) {
-            document.getElementById('bottom-left-container').style.display = showBottomLeft ? 'flex' : 'none';
+        function ToggleSectors(showTopLeft, showTopRight) {
+            document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
             document.getElementById('top-right-container').style.display = showTopRight ? 'flex' : 'none';
         }
 
@@ -117,41 +105,8 @@
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
             
-            document.getElementById('tr-color-1').style.color = hexColor;
-            document.getElementById('tr-color-1').style.backgroundColor = hexColor;
-            document.getElementById('tr-color-2').style.color = hexColor;
-            document.getElementById('tr-color-2').style.backgroundColor = hexColor;
-            document.getElementById('tr-color-3').style.color = hexColor;
-            document.getElementById('tr-color-3').style.backgroundColor = hexColor;
-        }
-
-        function UpdateBar(type, val, maxVal, labelText, forceShow) {
-            // Zırh verisi Lua'dan gelse bile HTML'de göstermeyi tamamen reddediyoruz
-            if (type === 'armor') return; 
-
-            let box = document.getElementById('box-' + type);
-            let fill = document.getElementById('fill-' + type);
-            let txt = document.getElementById('txt-' + type + '-val');
-
-            // AÇLIK/SUSUZLUK/UYKUSUZLUK MANTIĞI: Değer tam doluysa (100) gizle, azalınca göster
-            if (!forceShow && val >= maxVal && type !== 'health') {
-                box.style.display = 'none'; return;
-            } else {
-                box.style.display = 'block';
-            }
-
-            let percent = Math.max(0, Math.min(100, (val / maxVal) * 100));
-            fill.style.width = percent + '%';
-            txt.innerText = labelText !== undefined ? labelText : Math.round(val);
-        }
-
-        function UpdateWand(spellName, percent, timerStr, isVisible) {
-            let box = document.getElementById('box-wand');
-            if (!isVisible) { box.style.display = 'none'; return; }
-            box.style.display = 'block';
-            document.getElementById('txt-wand-name').innerText = spellName;
-            document.getElementById('txt-wand-val').innerText = timerStr;
-            document.getElementById('fill-wand').style.width = percent + '%';
+            // Tüm ikonların arkasına düşecek parlama rengini (faction color) belirliyoruz
+            document.documentElement.style.setProperty('--fac-color', hexColor);
         }
     </script>
 </body>
