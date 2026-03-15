@@ -13,6 +13,8 @@
             color: white;
             text-shadow: 1px 1px 2px black;
         }
+        
+        /* SOL ÜST */
         #top-left-container {
             position: absolute; top: 15px; left: 15px;
             display: none; align-items: center; gap: 10px;
@@ -20,46 +22,24 @@
         .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
         
-        /* --- SAĞ ÜST: TAMAMEN ORTALANDI --- */
+        /* SAĞ ÜST */
         #top-right-container {
             position: absolute; top: 15px; right: 15px;
-            display: flex; flex-direction: column; gap: 6px; 
-            align-items: center; /* Tümü tam ortaya hizalandı */
-            min-width: 160px; /* Ortalamanın düzgün durması için genişlik verildi */
-            display: none; 
+            display: flex; flex-direction: column; gap: 5px; 
+            align-items: center; min-width: 160px; display: none; 
         }
         .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; justify-content: center; }
         .info-icon { width: 20px; height: 20px; }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
         
-        /* Simetrik Çizgi: Her iki uç şeffaf, ortası parlak */
         .separator {
             width: 100%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--fac-color), transparent);
             box-shadow: 0px 0px 4px var(--fac-color);
-            opacity: 0.8; margin: 2px 0;
-            border-radius: 2px;
+            opacity: 0.8; margin: 2px 0; border-radius: 2px;
         }
-
-        #bottom-left-container {
-            position: absolute; bottom: 30px; left: 15px;
-            width: 240px; display: flex; flex-direction: column; gap: 10px; display: none;
-        }
-        .bar-wrapper {
-            display: none; background-color: rgba(15, 17, 20, 0.6);
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 12px; border-radius: 4px; transition: opacity 0.3s;
-        }
-        .bar-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .bar-track { width: 100%; height: 6px; background-color: rgba(0,0,0,0.7); border-radius: 3px; overflow: hidden; }
-        .bar-fill { height: 100%; width: 0%; border-radius: 3px; transition: width 0.2s linear; }
-        #fill-health { background-color: #2ecc71; }
-        #fill-hunger { background-color: #e67e22; }
-        #fill-thirst { background-color: #3498db; }
-        #fill-sleep { background-color: #9b59b6; }
-        #fill-wand { background-color: #e74c3c; }
-        .highlight-text { color: #f1c40f; }
         
+        /* SAĞ ALT GSPEAK */
         #voice-container {
             position: absolute; bottom: 30px; right: 30px;
             display: none; flex-direction: column; align-items: center; gap: 8px;
@@ -67,8 +47,8 @@
         .voice-circle {
             width: 50px; height: 50px; background-color: rgba(20, 22, 26, 0.8);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            position: relative; transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
-            --voice-color: #ffffff;
+            position: relative; --voice-color: #ffffff;
+            transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
         }
         .voice-circle.talking {
             background-color: var(--voice-color);
@@ -76,6 +56,7 @@
         }
         .voice-icon { width: 26px; height: 26px; position: absolute; transition: opacity 0.15s ease-out; }
         #voice-icon-active { opacity: 0; }
+        
         .voice-bars { display: flex; gap: 4px; }
         .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.15s; }
     </style>
@@ -94,29 +75,6 @@
         <div class="info-row"><img src="icons/gametimeicon.png" class="info-icon"><span id="tr-gametime">00:00</span></div>
     </div>
     
-    <div id="bottom-left-container">
-        <div class="bar-wrapper" id="box-wand">
-            <div class="bar-info"><span id="txt-wand-name">Büyü</span><span id="txt-wand-val" class="highlight-text">Hazır</span></div>
-            <div class="bar-track"><div class="bar-fill" id="fill-wand"></div></div>
-        </div>
-        <div class="bar-wrapper" id="box-health" style="display: block;">
-            <div class="bar-info"><span>Sağlık</span><span id="txt-health-val">100</span></div>
-            <div class="bar-track"><div class="bar-fill" id="fill-health"></div></div>
-        </div>
-        <div class="bar-wrapper" id="box-hunger">
-            <div class="bar-info"><span>Açlık</span><span id="txt-hunger-val">100</span></div>
-            <div class="bar-track"><div class="bar-fill" id="fill-hunger"></div></div>
-        </div>
-        <div class="bar-wrapper" id="box-thirst">
-            <div class="bar-info"><span>Susuzluk</span><span id="txt-thirst-val">100</span></div>
-            <div class="bar-track"><div class="bar-fill" id="fill-thirst"></div></div>
-        </div>
-        <div class="bar-wrapper" id="box-sleep">
-            <div class="bar-info"><span>Uykusuzluk</span><span id="txt-sleep-val">100</span></div>
-            <div class="bar-track"><div class="bar-fill" id="fill-sleep"></div></div>
-        </div>
-    </div>
-    
     <div id="voice-container">
         <div class="voice-circle" id="voice-circle">
             <img src="icons/micon.png" id="voice-icon-idle" class="voice-icon">
@@ -130,12 +88,12 @@
     </div>
     
     <script>
-        function ToggleSectors(showTopLeft, showTopRight, showBottomLeft, showVoice) {
+        function ToggleSectors(showTopLeft, showTopRight, showVoice) {
             document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
             document.getElementById('top-right-container').style.display = showTopRight ? 'flex' : 'none';
-            document.getElementById('bottom-left-container').style.display = showBottomLeft ? 'flex' : 'none';
             document.getElementById('voice-container').style.display = showVoice ? 'flex' : 'none';
         }
+        
         function UpdateTopRight(id, name, realTime, realDate, gameTime, hexColor) {
             document.getElementById('tr-id').innerText = id;
             document.getElementById('tr-name').innerText = name;
@@ -144,26 +102,7 @@
             document.getElementById('tr-gametime').innerText = gameTime;
             document.documentElement.style.setProperty('--fac-color', hexColor);
         }
-        function UpdateBar(type, val, maxVal, labelText, forceShow) {
-            let box = document.getElementById('box-' + type);
-            let fill = document.getElementById('fill-' + type);
-            let txt = document.getElementById('txt-' + type + '-val');
-            if (!forceShow && val >= maxVal && type !== 'health') {
-                box.style.display = 'none'; return;
-            } else { box.style.display = 'block'; }
-            let percent = Math.max(0, Math.min(100, (val / maxVal) * 100));
-            fill.style.width = percent + '%';
-            txt.innerText = labelText !== undefined ? labelText : Math.round(val);
-        }
-        function UpdateWand(spellName, percent, timerStr, isVisible) {
-            let box = document.getElementById('box-wand');
-            if (!isVisible) { box.style.display = 'none'; return; }
-            box.style.display = 'block';
-            document.getElementById('txt-wand-name').innerText = spellName;
-            document.getElementById('txt-wand-val').innerText = timerStr;
-            document.getElementById('fill-wand').style.width = percent + '%';
-        }
-        
+
         function UpdateVoice(isTalking, rangeLevel, hexColor) {
             let circle = document.getElementById('voice-circle');
             let iconIdle = document.getElementById('voice-icon-idle');
