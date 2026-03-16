@@ -3,62 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        :root {
-            --fac-color: #ffffff; 
-        }
-        body {
-            margin: 0; padding: 0; overflow: hidden;
-            background-color: transparent; 
-            font-family: 'Arial', sans-serif; 
-            color: white;
-            text-shadow: 1px 1px 2px black;
-        }
+        :root { --fac-color: #ffffff; }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: transparent; font-family: 'Arial', sans-serif; color: white; text-shadow: 1px 1px 2px black; }
         
-        /* SOL ÜST */
-        #top-left-container {
-            position: absolute; top: 15px; left: 15px;
-            display: none; align-items: center; gap: 10px;
-        }
+        #top-left-container { position: absolute; top: 15px; left: 15px; display: none; align-items: center; gap: 10px; }
         .dc-icon { width: 28px; height: 28px; }
         .discord-text { font-size: 16px; font-weight: bold; letter-spacing: 1px; color: #fff; }
         
-        /* SAĞ ÜST */
-        #top-right-container {
-            position: absolute; top: 15px; right: 15px;
-            display: flex; flex-direction: column; gap: 5px; 
-            align-items: center; min-width: 160px; display: none; 
-        }
+        #top-right-container { position: absolute; top: 15px; right: 15px; display: flex; flex-direction: column; gap: 5px; align-items: center; min-width: 160px; display: none; }
         .info-row { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: bold; justify-content: center; }
         .info-icon { width: 20px; height: 20px; }
         .text-muted { color: #ccc; font-weight: normal; margin: 0 2px; }
         
-        .separator {
-            width: 100%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--fac-color), transparent);
-            box-shadow: 0px 0px 4px var(--fac-color);
-            opacity: 0.8; margin: 2px 0; border-radius: 2px;
-        }
-        
-        /* SAĞ ALT GSPEAK */
-        #voice-container {
-            position: absolute; bottom: 30px; right: 30px;
-            display: none; flex-direction: column; align-items: center; gap: 8px;
-        }
-        .voice-circle {
-            width: 50px; height: 50px; background-color: rgba(20, 22, 26, 0.8);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            position: relative; --voice-color: #ffffff;
-            transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
-        }
-        .voice-circle.talking {
-            background-color: var(--voice-color);
-            box-shadow: 0px 0px 15px var(--voice-color);
-        }
-        .voice-icon { width: 26px; height: 26px; position: absolute; transition: opacity 0.15s ease-out; }
-        #voice-icon-active { opacity: 0; }
-        
-        .voice-bars { display: flex; gap: 4px; }
-        .v-bar { width: 14px; height: 6px; background-color: rgba(60, 60, 65, 0.6); border-radius: 2px; transition: background-color 0.15s; }
+        .separator { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--fac-color), transparent); box-shadow: 0px 0px 4px var(--fac-color); opacity: 0.8; margin: 2px 0; border-radius: 2px; }
     </style>
 </head>
 <body>
@@ -66,7 +23,6 @@
         <img src="icons/discordicon.png" class="dc-icon" alt="DC">
         <span class="discord-text">dc.gg/wyxen</span>
     </div>
-    
     <div id="top-right-container">
         <div class="info-row"><img src="icons/manicon.png" class="info-icon"><span id="tr-id">0</span><span id="tr-name">Oyuncu Adı</span></div>
         <div class="separator"></div>
@@ -75,25 +31,11 @@
         <div class="info-row"><img src="icons/gametimeicon.png" class="info-icon"><span id="tr-gametime">00:00</span></div>
     </div>
     
-    <div id="voice-container">
-        <div class="voice-circle" id="voice-circle">
-            <img src="icons/micon.png" id="voice-icon-idle" class="voice-icon">
-            <img src="icons/micoff.png" id="voice-icon-active" class="voice-icon">
-        </div>
-        <div class="voice-bars">
-            <div class="v-bar" id="v-bar-1"></div>
-            <div class="v-bar" id="v-bar-2"></div>
-            <div class="v-bar" id="v-bar-3"></div>
-        </div>
-    </div>
-    
     <script>
-        function ToggleSectors(showTopLeft, showTopRight, showVoice) {
+        function ToggleSectors(showTopLeft, showTopRight) {
             document.getElementById('top-left-container').style.display = showTopLeft ? 'flex' : 'none';
             document.getElementById('top-right-container').style.display = showTopRight ? 'flex' : 'none';
-            document.getElementById('voice-container').style.display = showVoice ? 'flex' : 'none';
         }
-        
         function UpdateTopRight(id, name, realTime, realDate, gameTime, hexColor) {
             document.getElementById('tr-id').innerText = id;
             document.getElementById('tr-name').innerText = name;
@@ -101,35 +43,6 @@
             document.getElementById('tr-realdate').innerText = realDate;
             document.getElementById('tr-gametime').innerText = gameTime;
             document.documentElement.style.setProperty('--fac-color', hexColor);
-        }
-
-        function UpdateVoice(isTalking, rangeLevel, hexColor) {
-            let circle = document.getElementById('voice-circle');
-            let iconIdle = document.getElementById('voice-icon-idle');
-            let iconActive = document.getElementById('voice-icon-active');
-            
-            circle.style.setProperty('--voice-color', hexColor);
-            
-            if (isTalking) {
-                circle.classList.add('talking');
-                iconIdle.style.opacity = '0';
-                iconActive.style.opacity = '1';
-            } else {
-                circle.classList.remove('talking');
-                iconIdle.style.opacity = '1';
-                iconActive.style.opacity = '0';
-            }
-            
-            for (let i = 1; i <= 3; i++) {
-                let bar = document.getElementById('v-bar-' + i);
-                if (isTalking && i <= rangeLevel) {
-                    bar.style.backgroundColor = hexColor;
-                } else if (i <= rangeLevel) {
-                    bar.style.backgroundColor = 'rgba(100, 100, 100, 0.6)';
-                } else {
-                    bar.style.backgroundColor = 'rgba(40, 40, 40, 0.4)';
-                }
-            }
         }
     </script>
 </body>
